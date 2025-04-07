@@ -20,37 +20,71 @@
         <li><a href="schedule.html">Schedule</a></li>
       </ul>
     </nav>
-  </header>
-  <h1>Sign Up for Gym Membership</h1>
-  <p>Become a part of our fitness community and start your journey today!</p>
+</header>
 
-  <div class="signup-form">
-    <h2>Personal Information</h2>
-    <form action="/submit-signup" method="POST">
-      <label for="name">Full Name:</label>
-      <input type="text" id="name" name="name" required placeholder="Enter your full name">
+<h1>Sign Up for Gym Membership</h1>
+<p>Become a part of our fitness community and start your journey today!</p>
 
-      <label for="email">Email Address:</label>
-      <input type="email" id="email" name="email" required placeholder="Enter your email address">
+<div class="signup-form">
+  <h2>Personal Information</h2>
+  <form id="signupForm">
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" name="name" required placeholder="Enter your full name">
 
-      <label for="phone">Phone Number:</label>
-      <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" name="email" required placeholder="Enter your email address">
 
-      <label for="membership-type">Membership Type:</label>
-      <select id="membership-type" name="membership-type" required>
-        <option value="basic">Basic Membership</option>
-        <option value="premium">Premium Membership</option>
-        <option value="vip">VIP Membership</option>
-      </select>
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
 
-      <label for="start-date">Preferred Start Date:</label>
-      <input type="date" id="start-date" name="start-date" required>
+    <label for="membership-type">Membership Type:</label>
+    <select id="membership-type" name="membership-type" required>
+      <option value="basic">Basic Membership</option>
+      <option value="premium">Premium Membership</option>
+      <option value="vip">VIP Membership</option>
+    </select>
 
-      <a href="submitsignup.html" class="cta-btn">Sign Up</a>
-    </form>
-  </div>
-<br></br>
-  <p>Already have an account? <a href="login.html" class="cta-btn">Login Here</a></p>
+    <label for="start-date">Preferred Start Date:</label>
+    <input type="date" id="start-date" name="start-date" required>
 
+    <button type="submit" class="cta-btn">Sign Up</button>
+  </form>
+  <div id="signupConfirmation" style="margin-top: 20px;"></div>
+</div>
+<br>
+<p>Already have an account? <a href="login.html" class="cta-btn">Login Here</a></p>
+
+<script>
+  const form = document.getElementById('signupForm');
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const member = {
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      membershipType: form["membership-type"].value,
+      startDate: form["start-date"].value
+    };
+
+    try {
+      const res = await fetch('http://localhost:3000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(member)
+      });
+
+      const data = await res.json();
+      document.getElementById('signupConfirmation').innerText = data.message;
+      form.reset();
+    } catch (err) {
+      document.getElementById('signupConfirmation').innerText = 'Error submitting signup.';
+      console.error(err);
+    }
+  });
+</script>
 </body>
 </html>
+
