@@ -22,8 +22,66 @@
     </nav>
   </header>
 
+  <section class="schedule">
+    <h1>Schedule a Personal Training Session</h1>
+    <p>Book your training session with one of our certified trainers below.</p>
+
+    <form id="scheduleForm">
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+      <label for="trainer">Choose Trainer:</label>
+      <select id="trainer" name="trainer" required>
+        <option value="Sarah Smith">Sarah Smith</option>
+        <option value="John Johnson">John Johnson</option>
+      </select>
+
+      <label for="date">Preferred Date:</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="time">Preferred Time:</label>
+      <input type="time" id="time" name="time" required>
+
+      <button type="submit" class="cta-btn">Book Appointment</button>
+    </form>
+
+    <div id="confirmationMessage" style="margin-top: 20px;"></div>
+  </section>
+
   <footer>
     <p>&copy; 2025 Momentum Gym. All rights reserved.</p>
   </footer>
+
+  <script>
+    const form = document.getElementById('scheduleForm');
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const appointment = {
+        email: form.email.value,
+        trainer: form.trainer.value,
+        date: form.date.value,
+        time: form.time.value
+      };
+
+      try {
+        const res = await fetch('http://localhost:3000/api/schedule', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(appointment)
+        });
+
+        const data = await res.json();
+        document.getElementById('confirmationMessage').innerText = data.message;
+        form.reset();
+      } catch (err) {
+        document.getElementById('confirmationMessage').innerText = 'Error scheduling appointment.';
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
+
