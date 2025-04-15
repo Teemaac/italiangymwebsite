@@ -1,0 +1,12 @@
+{
+  "members": [
+    {
+      "name": "Dwayne 'The Rock' Johnson",
+      "email": "therock@wwf.org",
+      "phone": "616-234-4566",
+      "membershipType": "vip",
+      "startDate": "2025-04-15"
+    }
+  ],
+  "appointments": []
+}
